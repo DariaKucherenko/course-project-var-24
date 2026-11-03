@@ -22,9 +22,9 @@
 
 $$
 Q(X) = \begin{cases}
-4 \cdot \ln(X) + 15, & \text{при } 0 < X < 2 \\[4pt]
-(X - 5)^2 + 45,     & \text{при } 2 \le X \le 8 \\[4pt]
-2 \cdot (X - 8) + 60, & \text{при } 8 < X \le 21
+4\ln(X) + 15, & 0 < X < 2 \\
+(X-5)^2 + 45, & 2 \le X \le 8 \\
+2(X-8) + 60, & 8 < X \le 21
 \end{cases}
 $$
 
