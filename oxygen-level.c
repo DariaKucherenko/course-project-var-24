@@ -16,28 +16,25 @@
 #define COEF2_F3 8.0     // коэф. 2 формулы 3
 #define COEF3_F3 60.0    // коэф. 3 формулы 3
 
-
 #define RC_OK        0
 #define RC_RANGE     1   
 #define RC_LOG_DOM   2   
 
-// ввод х
-int input_x(double* x);
+// проверка диапазона х
+int input_x(double x);
 
-//преобразование х
+// преобразование х
 int convert_x_to_q(double x, double* q);
 
 // контроль по нижней границе LCL
 int check_state(double q);
 
-
-/* 
 // среднее первой и второй половины интервала и их разность
- void calc_halves_stats(const double q_values[], int n);
+void calc_halves_stats(const double q_values[], int n);
 
 // будущая доп функция
- void extra_function_stub(void);
-*/
+void extra_function_stub(void);
+
 
 int main(void)
 {
@@ -56,8 +53,12 @@ int main(void)
     printf("Допустимый диапозон Х: от %.2f до %.2f\n\n", X_MIN, X_MAX);
     printf("*********************************************************************************************************************\n\n");
 
-    // ввод х
-    rc = input_x(&x);
+    //  ввод х 
+    printf("Введите X  : ");
+    scanf("%lf", &x);
+
+    // проверка диапазона х
+    rc = input_x(x);
     if (rc == RC_RANGE)
     {
         printf("Ошибка: X вне диапазона %.1f...%.1f\n\n", X_MIN, X_MAX);
@@ -91,24 +92,19 @@ int main(void)
         break;
     }
 
-    
-  /* printf("Статистика по Q[1..16] \n");
-     calc_halves_stats(NULL, 0);
+    printf("Статистика по Q[1..16] \n");
+    calc_halves_stats(NULL, 0);
 
     printf("Дополнительная функция \n");
     extra_function_stub();
-    */
 
     printf("Состояние программы: завершена (успех выполнения) \n");
     return 0;
 }
 
-int input_x(double* x)
+int input_x(double x)
 {
-    printf("Введите X  : ");
-    scanf("%lf", x);
-
-    if (*x < X_MIN || *x > X_MAX)
+    if (x < X_MIN || x > X_MAX)
     {
         return RC_RANGE;
     }
@@ -141,3 +137,37 @@ int check_state(double q)
     return (q < LCL) ? 1 : 0;
 }
 
+void calc_halves_stats(const double q_values[], int n)
+{
+    if (q_values == NULL || n <= 1)
+    {
+        printf("Массив Q[1..16] пока не передан (функция-заглушка).\n\n");
+        return;
+    }
+
+    int half = n / 2;
+    double sum1 = 0.0;
+    double sum2 = 0.0;
+
+    for (int i = 0; i < half; i++)
+    {
+        sum1 += q_values[i];
+    }
+    for (int i = half; i < n; i++)
+    {
+        sum2 += q_values[i];
+    }
+
+    double avg1 = sum1 / half;
+    double avg2 = sum2 / (n - half);
+    double diff = avg1 - avg2;
+
+    printf("Среднее первой половины: %.2f\n", avg1);
+    printf("Среднее второй половины: %.2f\n", avg2);
+    printf("Разность средних:        %.2f\n\n", diff);
+}
+
+void extra_function_stub(void)
+{
+    printf("Дополнительная функция находится в разработке (заглушка).\n\n");
+}
